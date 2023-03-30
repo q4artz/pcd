@@ -26,7 +26,12 @@ int main(){
     };
     while(!EOF){
         char buffer[256];
-        fread(&SalesDetail,sizeof(SalesOrder),256,filePTR);
+        fread(&SalesDetail.SalesOrderID,sizeof(char),5,filePTR);
+        fread(&SalesDetail.ItemCode,sizeof(char),7,filePTR);
+        fread(&SalesDetail.QuantityOrdered,sizeof(int),1,filePTR);
+        fread(&SalesDetail.Price,sizeof(double),1,filePTR);
+        fread(&SalesDetail.MemberID,sizeof(char),10,filePTR);
     };
-    printf("thing from bin file \n%s\n%s\n%d\n%lf\n%s\n",SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
+    printf("thing from bin file \n%s\n%s\n%d\n%lf\n%s\n"
+    ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
 }
