@@ -16,7 +16,7 @@ int main(){
     SalesOrder SalesDetail;
     puts("Accessing Reading Module... \n");
 
-    FILE *filePTR = fopen("SalesModuleFile.bin","rb");
+    FILE *filePTR = fopen("SalesModuleFile.bin","rb+");
 
     int counter;
 
@@ -24,14 +24,14 @@ int main(){
         puts("There is nothing inside the file.");
         fclose(filePTR);
     };
-    while(!EOF){
-        char buffer[256];
-        fread(&SalesDetail.SalesOrderID,sizeof(char),5,filePTR);
-        fread(&SalesDetail.ItemCode,sizeof(char),7,filePTR);
-        fread(&SalesDetail.QuantityOrdered,sizeof(int),1,filePTR);
-        fread(&SalesDetail.Price,sizeof(double),1,filePTR);
-        fread(&SalesDetail.MemberID,sizeof(char),10,filePTR);
-    };
-    printf("thing from bin file \n%s\n%s\n%d\n%lf\n%s\n"
+
+    while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
+       fwrite(&SalesDetail.SalesOrderID,sizeof(char),5,filePTR);
+       fwrite(&SalesDetail.ItemCode,sizeof(char),7,filePTR);
+       fwrite(&SalesDetail.QuantityOrdered,sizeof(int),1,filePTR);
+       fwrite(&SalesDetail.Price,sizeof(double),1,filePTR);
+       fwrite(&SalesDetail.MemberID,sizeof(char),10,filePTR);
+    }
+    printf("thing from bin file \n%s\n%s\n%d\n%.2lf\n%s\n"
     ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
 }

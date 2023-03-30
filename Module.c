@@ -10,6 +10,7 @@ typedef struct{
     double Price;
     char MemberID[10];
 }SalesOrder;
+
 void OptionSelect(){
     
     // Job (Let user input what they want to do. then pass to FilterOption(); );
@@ -25,9 +26,9 @@ void OptionSelect(){
         puts("1 > Add");
         puts("2 > Modify");
         puts("3 > Delete");
-        scanf("%d",&option);
+        scanf("%d",option);
         
-        printf("\n\nConfirm option \t%d ??\n",option);
+        printf("\n\nConfirm option \t%d ??\n",*option);
         puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
         scanf(" %c",&confirmation);
         puts("\n");
@@ -45,45 +46,43 @@ int FilterOption(int *option){
         return 0;
     }
     else if(*option == 1){
-        AddModule();
+        void AddModule();
     }
     else if(*option == 2){
-        ModifyModule();
+        void ModifyModule();
     }
     else if(*option == 3){
-        DeleteModule();
+        void DeleteModule();
     }
     else{
         puts("\nPlease Select A Valid Option\n");
         OptionSelect();
     }
-}
+};
 void AddModule(){
-    char confirmation; 
-    int Error = 0;
     puts("Activating Add Module... \n");
 
-    WriteToFile();
+    void WriteToFile();
 
 
 };
-ModifyModule(){
+void ModifyModule(){
     puts("Activating Modify Module... \n");
 
-    SearchModule();
+    void SearchModule();
 };
-DeleteModule(){
+void DeleteModule(){
     puts("Activating Delete Module... \n");
 
-    SearchModule();
+    void SearchModule();
 };
-SearchModule(){
+void SearchModule(){
     puts("Activating Search Module");
 };
 void DisplayModule(){
     puts("Activating Display Module... \n");
 
-    ReadFromFile();
+    void ReadFromFile();
 };
 void WriteToFile(){
     
@@ -102,13 +101,13 @@ void WriteToFile(){
 
     do{
     puts("Format: \nSales Order ID (eg. S001)\nItem Code (eg. ITM001)\nQuantity Ordered (eg. 10)\nPrice (eg. RM 250k)\nMember ID (eg. MEM001)\n");
-
-    scanf(" %s",&SalesDetail.SalesOrderID);
-    scanf("%s",&SalesDetail.ItemCode);
+ 
+    scanf(" %s",SalesDetail.SalesOrderID);
+    scanf(" %s",SalesDetail.ItemCode);
     scanf("%d",&SalesDetail.QuantityOrdered);
     scanf("%lf",&SalesDetail.Price);
-    scanf(" %s",&SalesDetail.SalesOrderID);
-  
+    scanf(" %s",SalesDetail.MemberID);
+
     puts("Currently Writting to file... \n");
     fwrite(&SalesDetail,sizeof(SalesDetail),1,filePTR);
 
@@ -119,27 +118,34 @@ void WriteToFile(){
     
     }while(confirmation != 'n');
 
-    puts("Exiting Writing Module... \n");
+    puts("Exiting Write Module... \n");
 }
 void ReadFromFile(){
 
-    puts("Accessing Reading Module... \n");
+    puts("Accessing Read Module... \n");
 
     FILE *filePTR = fopen("SalesModuleFile.bin","rb");
-
+    SalesOrder SalesDetail;
     int counter;
 
-    if(filePTR == NULL){
+     if(filePTR == NULL){
         puts("There is nothing inside the file.");
         fclose(filePTR);
     };
-    while(!EOF){
-        char buffer[256];
-        fread(&buffer,sizeof(buffer),1,filePTR);
-        printf("%s",buffer);
-    };
+
+    while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
+       fwrite(&SalesDetail.SalesOrderID,sizeof(char),5,filePTR);
+       fwrite(&SalesDetail.ItemCode,sizeof(char),7,filePTR);
+       fwrite(&SalesDetail.QuantityOrdered,sizeof(int),1,filePTR);
+       fwrite(&SalesDetail.Price,sizeof(double),1,filePTR);
+       fwrite(&SalesDetail.MemberID,sizeof(char),10,filePTR);
+    }
+    printf("thing from the bin file \nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
+    ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
+
+    puts("Exiting Read Module... \n");
 };
-CountFileAccess(int *AccessCount){};
+void CountFileAccess(int *AccessCount){};
 int main(){
     
     DisplayModule();
