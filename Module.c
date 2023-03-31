@@ -22,13 +22,11 @@ void SearchModule();
 void ReadFromFile();
 void CountFileAccess(int *AccessCount);
 
-int main(){
+int main(int argc, char *argv[]){
     
-    DisplayModule();
-
     OptionSelect();
 
-    puts("back at main");
+    
 };
 void OptionSelect(){
     
@@ -52,7 +50,7 @@ void OptionSelect(){
         scanf(" %c",&confirmation);
         puts("\n");
     }
-    FilterOption(option);
+    FilterOption(&option);
 }
 int FilterOption(int *option){
 
@@ -79,21 +77,31 @@ int FilterOption(int *option){
     }
 };
 void AddModule(){
+    //Job Write to file, ask User if they want to see file content. Yes throw to DisplayModule(). No go back OptionSelect();
+    char confirmation;
     puts("Activating Add Module... \n");
 
-    void WriteToFile();
+    WriteToFile();
 
+    puts("Would You Like to View Contents within the file?\n");
+    puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
+    scanf(" %c",&confirmation);
+    
+    if(confirmation == 'y'){
+        DisplayModule();
+    }
+    OptionSelect();
 
 };
 void ModifyModule(){
     puts("Activating Modify Module... \n");
 
-    void SearchModule();
+    SearchModule();
 };
 void DeleteModule(){
     puts("Activating Delete Module... \n");
 
-    void SearchModule();
+    SearchModule();
 };
 void SearchModule(){
     puts("Activating Search Module");
@@ -101,7 +109,7 @@ void SearchModule(){
 void DisplayModule(){
     puts("Activating Display Module... \n");
 
-    void ReadFromFile();
+    ReadFromFile();
 };
 void WriteToFile(){
     
