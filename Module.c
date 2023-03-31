@@ -46,7 +46,7 @@ void OptionSelect(){
         scanf("%d",&option);
         
         printf("\n\nConfirm option \t%d ??\n",option);
-        puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
+        puts("y > proceed \nn > no proceed \n(Pease only enter lower case)");
         scanf(" %c",&confirmation);
         puts("\n");
     }
@@ -56,10 +56,10 @@ int FilterOption(int *option){
 
     // Job (Filter out User option, throw them to the place they want);
 
-    printf("\nUser selected option \t%d\n",*option);
+    printf("\nUser selected option >\t%d\n",*option);
     
     if(*option == 0){
-        puts("\nExiting Program... \n");
+        puts("\nExiting Program... ");
         return 0;
     }
     else if(*option == 1){
@@ -72,7 +72,7 @@ int FilterOption(int *option){
         DeleteModule();
     }
     else{
-        puts("\nPlease Select A Valid Option\n");
+        puts("\n\nPlease Select A Valid Option\n");
         OptionSelect();
     }
 };
@@ -107,7 +107,7 @@ void SearchModule(){
     puts("Activating Search Module");
 };
 void DisplayModule(){
-    puts("Activating Display Module... \n");
+    puts("\nActivating Display Module... \n");
 
     ReadFromFile();
 };
@@ -135,7 +135,7 @@ void WriteToFile(){
     scanf("%lf",&SalesDetail.Price);
     scanf(" %s",SalesDetail.MemberID);
 
-    puts("Currently Writting to file... \n");
+    puts("\nCurrently Writting to file... \n");
     fwrite(&SalesDetail,sizeof(SalesDetail),1,filePTR);
 
     puts("\nDo you Want to Continue? \n");
@@ -151,7 +151,7 @@ void WriteToFile(){
 }
 void ReadFromFile(){
 
-    puts("Accessing Read Module... \n");
+    puts("\nAccessing Read Module... \n");
 
     FILE *filePTR = fopen("SalesModuleFile.bin","rb");
     SalesOrder SalesDetail;
@@ -169,10 +169,10 @@ void ReadFromFile(){
        fwrite(&SalesDetail.Price,sizeof(double),1,filePTR);
        fwrite(&SalesDetail.MemberID,sizeof(char),10,filePTR);
     }
-    printf("thing from the bin file \nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
+    printf("\n\nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
     ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
 
     fclose(filePTR);
-    puts("Exiting Read Module... \n");
+    puts("\n\nExiting Read Module... \n");
 };
 void CountFileAccess(int *AccessCount){};
