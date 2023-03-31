@@ -11,6 +11,25 @@ typedef struct{
     char MemberID[10];
 }SalesOrder;
 
+void OptionSelect();
+int FilterOption(int *option);
+void AddModule();
+void DeleteModule();
+void ModifyModule();
+void DisplayModule();
+void WriteToFile();
+void SearchModule();
+void ReadFromFile();
+void CountFileAccess(int *AccessCount);
+
+int main(){
+    
+    DisplayModule();
+
+    OptionSelect();
+
+    puts("back at main");
+};
 void OptionSelect(){
     
     // Job (Let user input what they want to do. then pass to FilterOption(); );
@@ -26,14 +45,14 @@ void OptionSelect(){
         puts("1 > Add");
         puts("2 > Modify");
         puts("3 > Delete");
-        scanf("%d",option);
+        scanf("%d",&option);
         
-        printf("\n\nConfirm option \t%d ??\n",*option);
+        printf("\n\nConfirm option \t%d ??\n",option);
         puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
         scanf(" %c",&confirmation);
         puts("\n");
     }
-    FilterOption(&option);
+    FilterOption(option);
 }
 int FilterOption(int *option){
 
@@ -46,13 +65,13 @@ int FilterOption(int *option){
         return 0;
     }
     else if(*option == 1){
-        void AddModule();
+        AddModule();
     }
     else if(*option == 2){
-        void ModifyModule();
+        ModifyModule();
     }
     else if(*option == 3){
-        void DeleteModule();
+        DeleteModule();
     }
     else{
         puts("\nPlease Select A Valid Option\n");
@@ -118,6 +137,8 @@ void WriteToFile(){
     
     }while(confirmation != 'n');
 
+    fclose(filePTR);
+
     puts("Exiting Write Module... \n");
 }
 void ReadFromFile(){
@@ -143,14 +164,7 @@ void ReadFromFile(){
     printf("thing from the bin file \nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
     ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
 
+    fclose(filePTR);
     puts("Exiting Read Module... \n");
 };
 void CountFileAccess(int *AccessCount){};
-int main(){
-    
-    DisplayModule();
-
-    OptionSelect();
-
-    puts("back at main");
-}
