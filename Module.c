@@ -11,24 +11,24 @@ typedef struct{
     char MemberID[10];
 }SalesOrder;
 
-void OptionSelect();
+void SalesModuleOptionSelect();
 int FilterOption(int *option);
 void AddModule();
-void DeleteModule();
+//void DeleteModule();
 void ModifyModule();
 void DisplayModule();
 void WriteToFile();
 void SearchModule();
 void ReadFromFile();
 void CountFileAccess(int *AccessCount);
+void ModuleSelect();
+int AskForContinueation();
 
 int main(int argc, char *argv[]){
-    
-    OptionSelect();
 
-    
+    ModuleSelect();
 };
-void OptionSelect(){
+void SalesModuleOptionSelect(){
     
     // Job (Let user input what they want to do. then pass to FilterOption(); );
 
@@ -43,6 +43,7 @@ void OptionSelect(){
         puts("1 > Add");
         puts("2 > Modify");
         puts("3 > Delete");
+        puts("4 > Display");
         scanf("%d",&option);
         
         printf("\n\nConfirm option \t%d ??\n",option);
@@ -68,13 +69,16 @@ int FilterOption(int *option){
     else if(*option == 2){
         ModifyModule();
     }
-    else if(*option == 3){
-        DeleteModule();
+//    else if(*option == 3){
+//        DeleteModule();
+//    }
+    else if(*option == 4){
+        DisplayModule();
     }
     else{
-        puts("\n\nPlease Select A Valid Option\n");
-        OptionSelect();
-    }
+    puts("\n\nPlease Select A Valid Option\n");
+    SalesModuleOptionSelect();
+    };
 };
 void AddModule(){
     //Job Write to file, ask User if they want to see file content. Yes throw to DisplayModule(). No go back OptionSelect();
@@ -90,26 +94,79 @@ void AddModule(){
     if(confirmation == 'y'){
         DisplayModule();
     }
-    OptionSelect();
+
+    AskForContinueation();
 
 };
 void ModifyModule(){
     puts("Activating Modify Module... \n");
 
     SearchModule();
-};
-void DeleteModule(){
-    puts("Activating Delete Module... \n");
 
-    SearchModule();
+    AskForContinueation();
 };
+//void DeleteModule(){
+//    puts("Activating Delete Module... \n");
+//
+//    SearchModule();
+//
+//    AskForContinueation();
+//};
 void SearchModule(){
     puts("Activating Search Module");
+    SalesOrder SalesDetail;
+    char UserSearchString[20];
+    char confirmation = 'n';
+    FILE *filePTR = fopen("SalesModuleFile.bin","wb");
+
+    while(confirmation != 'y'){
+        puts("Enter the Category You wanted to find\n1. salesorderid \n2. itemcode\n 3. quantityordered\n 4. price \n 5. memberid \n");
+        puts("!!! Please only enter Lower Case !!!");
+        scanf("%s",UserSearchString);
+        printf("You Written %s , Are you sure this is the one? \n",UserSearchString);
+        puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
+        scanf("%c",&confirmation);
+    }
+
+    if(strcmp(UserSearchString,"salesorderid")== 0){
+         while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
+           fwrite(&SalesDetail.SalesOrderID,sizeof(char),5,filePTR);
+        }
+    }
+    else if(strcmp(UserSearchString,"itemcode")== 0){
+         while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
+           fwrite(&SalesDetail.ItemCode,sizeof(char),7,filePTR);
+        }
+    }
+    else if(strcmp(UserSearchString,"quantityordered")== 0){
+        while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
+           fwrite(&SalesDetail.QuantityOrdered,sizeof(int),1,filePTR);
+        }
+    }
+    else if(strcmp(UserSearchString,"price")== 0){
+         while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
+           fwrite(&SalesDetail.Price,sizeof(double),1,filePTR);
+        }
+    }
+    else if(strcmp(UserSearchString,"memberid")== 0){
+         while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
+           fwrite(&SalesDetail.MemberID,sizeof(char),10,filePTR);
+        }
+    }
+    else{
+        puts("Please Enter Valid Category Stupid");
+    }
+
+    // display everything from UserSearchString
+    AskForContinueation();
+
 };
 void DisplayModule(){
     puts("\nActivating Display Module... \n");
 
     ReadFromFile();
+
+    AskForContinueation();
 };
 void WriteToFile(){
     
@@ -169,10 +226,55 @@ void ReadFromFile(){
        fwrite(&SalesDetail.Price,sizeof(double),1,filePTR);
        fwrite(&SalesDetail.MemberID,sizeof(char),10,filePTR);
     }
+
     printf("\n\nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
     ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
 
     fclose(filePTR);
     puts("\n\nExiting Read Module... \n");
+};
+int AskForContinueation(){
+    char confirmation = 'n';
+    char DoubleConfirm = 'n';
+    while(DoubleConfirm != 'y'){
+        puts("Would you like to continue?");
+        puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
+        scanf(" %c",&confirmation);
+
+        printf("You had choosen %c , Are You Sure?\n",confirmation);
+        puts("\ny > Yes i Confirm \nn > no I no Confirm \n(Pease only enter lower case)\n");
+        scanf(" %c",&DoubleConfirm);
+    }
+    if(confirmation == 'n'){
+        return 0;
+    }
+    ModuleSelect();
+};
+void ModuleSelect(){
+    // 1 == SalesModule 2 == Staff Module 3 == Stockmodule
+    int ModuleSelect;
+    puts("Which Module would you like to access? ");
+    puts("0 > Exit");
+    puts("1 > Sales System Module");
+    puts("2 > Staff Module");
+    puts("3 > Member Module");
+    scanf("%d",&ModuleSelect);
+
+    if(ModuleSelect == 0){
+        puts("Exiting.. ");
+        exit(0);
+    }
+    else if(ModuleSelect == 1){
+        SalesModuleOptionSelect();    
+    }
+    else if(ModuleSelect == 2){
+        // SatffModule();
+    }
+    else if(ModuleSelect == 3){
+        // MemberModule();
+    }
+    else{
+        puts("You did not select a Valid Module\n");
+    }
 };
 void CountFileAccess(int *AccessCount){};
