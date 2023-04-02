@@ -14,7 +14,6 @@ typedef struct{
 void SalesModuleOptionSelect();
 int FilterOption(int *option);
 void AddModule();
-//void DeleteModule();
 void ModifyModule();
 void DisplayModule();
 void WriteToFile();
@@ -42,7 +41,7 @@ void SalesModuleOptionSelect(){
         puts("0 > Exit");
         puts("1 > Add");
         puts("2 > Modify");
-        puts("3 > Delete");
+        puts("3 > Search");
         puts("4 > Display");
         scanf("%d",&option);
         
@@ -69,9 +68,9 @@ int FilterOption(int *option){
     else if(*option == 2){
         ModifyModule();
     }
-//    else if(*option == 3){
-//        DeleteModule();
-//    }
+    else if(*option == 3){
+       SearchModule();
+    }
     else if(*option == 4){
         DisplayModule();
     }
@@ -101,63 +100,108 @@ void AddModule(){
 void ModifyModule(){
     puts("Activating Modify Module... \n");
 
-    SearchModule();
+    SalesOrder SalesDetail;
+    int modified = 0;
+    int IDfound =0;
+    int NewIntValue;
+    double NewDoubleValue;
+    char UserInputSalesOrderID[5];
+    char field[20];
+    char NewValue[20];
+    FILE *filePTR = fopen("SalesModuleFile.bin","rb+");
+
+    puts("Enter Sales Order id > eg.S001");
+    scanf("%s",UserInputSalesOrderID);
+
+    while(fscanf(filePTR,"%[^\n]-%[^\n]-%d-%lf-%[^\n]",SalesDetail.SalesOrderID,SalesDetail.ItemCode,&SalesDetail.QuantityOrdered,&SalesDetail.Price,SalesDetail.MemberID) != EOF){
+        if(strcmp(SalesDetail.SalesOrderID,UserInputSalesOrderID)==0){
+            puts("Sales Module Found");
+             printf("\n\nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
+            ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
+            IDfound = 1;
+        }
+
+        printf("\nEnter field to modify: ");
+        scanf("%s", field);
+
+        if(strcmp(field,"quantity") == 0){
+            puts("Enter new integer Value");
+            scanf("%d",&NewIntValue);
+        }
+        else if(strcmp(field,"price") == 0){
+            puts("Enter new Double Value");
+            scanf("%lf",&NewDoubleValue);
+        }
+        else{
+        printf("Enter new value: ");
+        scanf("%s", NewValue);
+        }
+        if (strcmp(field, "salesorderid") == 0) {
+                strcpy(SalesDetail.SalesOrderID, NewValue);
+                modified = 1;
+                printf("%s",SalesDetail.SalesOrderID);
+            }
+        else if (strcmp(field,"itemcode") == 0) {
+                strcpy(SalesDetail.ItemCode,NewValue);
+                modified = 1;
+                printf("%s",SalesDetail.ItemCode);
+            }
+        else if (strcmp(field, "quantity") == 0) {
+            SalesDetail.QuantityOrdered = NewIntValue;
+            modified = 1;
+        }
+        else if (strcmp(field, "price") == 0) {
+            SalesDetail.Price = NewDoubleValue;
+            modified = 1;
+        }
+        else if (strcmp(field, "gender") == 0) {
+            strcpy(SalesDetail.MemberID,NewValue);
+            modified = 1;
+        }
+        if(modified == 1){
+            fprintf(filePTR,"%s\n%s\n%d\n%lf\n%s",SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
+            printf("\nSales information modified successfully.\n");
+        }
+        else{
+            fprintf(filePTR,"%s\n%s\n%d\n%lf\n%s",SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
+            printf("\nInvalid field name.\n");
+        }
+    }
+    if(!IDfound){
+        puts("Sales Does not exist.");
+    }
+    fclose(filePTR);
 
     AskForContinueation();
 };
-//void DeleteModule(){
-//    puts("Activating Delete Module... \n");
-//
-//    SearchModule();
-//
-//    AskForContinueation();
-//};
+
 void SearchModule(){
     puts("Activating Search Module");
     SalesOrder SalesDetail;
-    char UserSearchString[20];
+    char UserInputSalesOrderID[20];
     char confirmation = 'n';
-    FILE *filePTR = fopen("SalesModuleFile.bin","wb");
+    int Choice;
+    int IDfound =0;
+    FILE *filePTR = fopen("SalesModuleFile.bin","rb+");
 
-    while(confirmation != 'y'){
-        puts("Enter the Category You wanted to find\n1. salesorderid \n2. itemcode\n 3. quantityordered\n 4. price \n 5. memberid \n");
-        puts("!!! Please only enter Lower Case !!!");
-        scanf("%s",UserSearchString);
-        printf("You Written %s , Are you sure this is the one? \n",UserSearchString);
-        puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
-        scanf("%c",&confirmation);
-    }
+    puts("Enter Sales Order id > eg.S001");
+    scanf("%s",UserInputSalesOrderID);
 
-    if(strcmp(UserSearchString,"salesorderid")== 0){
-         while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
-           fwrite(&SalesDetail.SalesOrderID,sizeof(char),5,filePTR);
+    while(fscanf(filePTR,"%[^\n]-%[^\n]-%d-%lf-%[^\n]",SalesDetail.SalesOrderID,SalesDetail.ItemCode,&SalesDetail.QuantityOrdered,&SalesDetail.Price,SalesDetail.MemberID) != EOF){
+        if(strcmp(SalesDetail.SalesOrderID,UserInputSalesOrderID)==0){
+            puts("Sales Module Found");
+             printf("\n\nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
+            ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
+            IDfound = 1;
         }
     }
-    else if(strcmp(UserSearchString,"itemcode")== 0){
-         while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
-           fwrite(&SalesDetail.ItemCode,sizeof(char),7,filePTR);
-        }
-    }
-    else if(strcmp(UserSearchString,"quantityordered")== 0){
-        while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
-           fwrite(&SalesDetail.QuantityOrdered,sizeof(int),1,filePTR);
-        }
-    }
-    else if(strcmp(UserSearchString,"price")== 0){
-         while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
-           fwrite(&SalesDetail.Price,sizeof(double),1,filePTR);
-        }
-    }
-    else if(strcmp(UserSearchString,"memberid")== 0){
-         while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
-           fwrite(&SalesDetail.MemberID,sizeof(char),10,filePTR);
-        }
-    }
-    else{
-        puts("Please Enter Valid Category Stupid");
-    }
+    if(!IDfound){
+        puts("Sales ID not found");
+    };
 
-    // display everything from UserSearchString
+    fclose(filePTR);
+    
+
     AskForContinueation();
 
 };
@@ -238,7 +282,7 @@ int AskForContinueation(){
     char DoubleConfirm = 'n';
     while(DoubleConfirm != 'y'){
         puts("Would you like to continue?");
-        puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
+        puts("\ny > Continue \nn > no continue \n(Pease only enter lower case)\n");
         scanf(" %c",&confirmation);
 
         printf("You had choosen %c , Are You Sure?\n",confirmation);
