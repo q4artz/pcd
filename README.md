@@ -1,5 +1,5 @@
-AddModule() \n
-SearchModule()
-ModifyModule()
-DisplayModule()
-ReportModule()
+AddModule()  
+SearchModule()  
+ModifyModule()  
+DisplayModule()  
+ReportModule()  
