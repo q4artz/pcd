@@ -22,8 +22,33 @@ void ReadFromFile();
 void CountFileAccess(int *AccessCount);
 void ModuleSelect();
 int AskForContinueation();
+void ReportModule(int *CozyReport);
 
 int main(int argc, char *argv[]){
+
+    puts("                   '                   ");
+    puts("                  'o'                  ");  
+    puts("                 'ooo'                 ");   
+    puts("                'ooxoo'                ");  
+    puts("               'ooxxxoo'               ");   
+    puts("              'oookkxxoo'              "); 
+    puts("             'oiioxkkxxoo'             ");   
+    puts("            ':;:iiiioxxxoo'            ");  
+    puts("               `'.;::ioxxoo'           ");  
+    puts("          '-.      `':;jiooo'          "); 
+    puts("         'oooio-..     `'i:io'         ");  
+    puts("        'ooooxxxxoio:,.   `'-;'        ");  
+    puts("       'ooooxxxxxkkxoooIi:-.  `'       "); 
+    puts("      'ooooxxxxxkkkkxoiiiiiji'         ");   
+    puts("     'ooooxxxxxkxxoiiii:'`     .i'     ");
+    puts("   'ooooxxxxxoi:::'`       .;ioxo'     "); 
+    puts("   'ooooxooi::'`         .:iiixkxxo'   ");
+    puts("  'ooooi:'`                `'';ioxxo'  ");
+    puts(" 'i:'`                          '':io' ");
+    puts("'`                                   `'");
+
+    puts("\t---------------------------------------------------");
+    puts("|\tWelcome to Anchor Company Module Management Program\t|");
 
     ModuleSelect();
 };
@@ -207,11 +232,51 @@ void SearchModule(){
 };
 void DisplayModule(){
     puts("\nActivating Display Module... \n");
+    
+    int ReportSelection;
+    puts("Would you like to Look at a Compact Report or Cozy Report?");
+    puts("\n1 > Compact Report(no fancy formatting)\n2 > Cozy Report(Fancy Formatting)\n");
+    scanf("%d",&ReportSelection);
+    
+    if(ReportSelection == 1)
+        ReadFromFile();
 
-    ReadFromFile();
+    ReportModule(&ReportSelection);
 
     AskForContinueation();
 };
+void ReportModule(int *CozyReport){
+       puts("You had chosen Cozy Report format.. good choice..\n");
+
+    FILE *filePTR = fopen("SalesModuleFile.bin","rb");
+    SalesOrder SalesDetail;
+    int counter;
+
+     if(filePTR == NULL){
+        puts("There is nothing inside the file.");
+        fclose(filePTR);
+    };
+
+    while(fread(&SalesDetail,sizeof(SalesDetail),1,filePTR) != 0){
+       fwrite(&SalesDetail.SalesOrderID,sizeof(char),5,filePTR);
+       fwrite(&SalesDetail.ItemCode,sizeof(char),7,filePTR);
+       fwrite(&SalesDetail.QuantityOrdered,sizeof(int),1,filePTR);
+       fwrite(&SalesDetail.Price,sizeof(double),1,filePTR);
+       fwrite(&SalesDetail.MemberID,sizeof(char),10,filePTR);
+    }
+
+    puts("------------------------------------------------------------");
+    puts("||\tAnchor Company Cozy Sales Report\t\t ||");
+    puts("------------------------------------------------------------");
+    printf("|| \tSales Order ID \t\t>> \t%s\t\t ||\n",SalesDetail.SalesOrderID);
+    printf("|| \tSales Item Code \t\t>> \t%s\t ||\n",SalesDetail.ItemCode);
+    printf("|| \tQuantity Ordered \t\t>> \t%d\t ||\n",SalesDetail.QuantityOrdered);
+    printf("|| \tSales Item Price \t\t>> \t%.2lf\t ||\n",SalesDetail.Price);
+    printf("|| \tMember ID \t\t>> \t%s\t\t ||\n",SalesDetail.MemberID);
+    puts("------------------------------------------------------------");
+
+    fclose(filePTR);
+}
 void WriteToFile(){
     
     puts("Accessing Writing Module... \n");
