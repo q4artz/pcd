@@ -1,4 +1,4 @@
-AddModule()
+AddModule() \n
 SearchModule()
 ModifyModule()
 DisplayModule()
