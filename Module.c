@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
+#pragma warning(disable:4996);
 typedef struct{
     char SalesOrderID[5];
     char ItemCode[7];
