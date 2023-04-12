@@ -8,9 +8,10 @@ ReportModule()
 -------------------------  
 membermodule  
 Add  - done  
-search  -wip  
-modify -wip  
+search  -done    
+modify -done    
 display  -done  
-report  --wip
-Login   --wip  
-Register --wip  
+report  --done  
+Login   --done     
+
+--debugging.
