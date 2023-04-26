@@ -5,14 +5,11 @@
 #include <math.h>
 #pragma warning(disable:4996);
 typedef struct{
-    char MemberID[10];
-    char MemberPassPhrase[20];
-    char Name[50];
-    char gender[2];
-    char IC[15];
-    char ContactNumber[12];
-    char UpLineID[5];
-    char
+    char StaffID[10];
+    char StaffName[50];
+    char StaffPassPhrase[20];
+    char PasswordRecovery[20];
+    char Position[30];
 }StaffInfo;
 
 void MemberModuleOptionSelect();
@@ -108,18 +105,18 @@ int FilterOption(int *option){
     };
 };
 void LoginModule(){
-    MemberInfo MemberDetail;
-    char UserInputMemberID[20];
+    StaffInfo StaffDetail;
+    char UserInputStaffID[20];
     char UserInputPassphrase[20];
     int Loginsuccess =0;
-    FILE *filePTR = fopen("MemberModuleFile.txt","w+");
+    FILE *filePTR = fopen("StaffModuleFile.txt","w+");
     puts("Please Enter your Credentials!\n");
-    puts("Please Enter Your Member ID > eg.MEM001");
-    scanf(" %s",UserInputMemberID);
-    puts("Please Enter Your Member Passphrase");
+    puts("Please Enter Your Staff ID > eg.STF001");
+    scanf(" %s",UserInputStaffID);
+    puts("Please Enter Your Staff Passphrase");
     scanf(" %s",UserInputPassphrase);
 
-    if(strcmp(MemberDetail.MemberID,UserInputMemberID) == 0 && strcmp(MemberDetail.MemberPassPhrase,UserInputPassphrase) == 0){
+    if(strcmp(StaffDetail.StaffID,UserInputStaffID) == 0 && strcmp(StaffDetail.StaffPassPhrase,UserInputPassphrase) == 0){
         Loginsuccess =1;
     }
     else{
@@ -152,75 +149,70 @@ void modifyModule(){
     LoginModule();
     puts("In Modify Module\n");
 
-    MemberInfo MemberDetail;
+    StaffInfo StaffDetail;
     char NewCharValue;
     char NewValue[30];
-    char UserInputMemberID[6];
+    char UserInputStaffID[6];
     char UserInputPassphrase[20];
     char field[20];
     int modified =0;
     int IDfound =0;
-     FILE *filePTR = fopen("MemberModuleFile.txt","w+");
+     FILE *filePTR = fopen("StaffModuleFile.txt","w+");
 
-     puts("Enter Member id > eg.MEM001");
-     scanf(" %s",UserInputMemberID);
+     puts("Enter Staff id > eg.STF001");
+     scanf(" %s",UserInputStaffID);
      puts("Enter Passphrase.");
      scanf(" %s",UserInputPassphrase);
 
-     while (fscanf(filePTR, "%[^\n]-%[^\n]-%c-%[^\n]-%[^\n]-%[^\n]",
-                   MemberDetail.MemberID, MemberDetail.Name,
-                   MemberDetail.gender, MemberDetail.IC,
-                   MemberDetail.ContactNumber, MemberDetail.UpLineID) != EOF) {
-        if(strcmp(MemberDetail.MemberID,UserInputMemberID) == 0 && strcmp(MemberDetail.MemberPassPhrase,UserInputPassphrase) == 0){
-             fprintf(filePTR,"\n\nMember ID > %s\nMember Name > %s\nMember Gender > %s\nMember IC > %s\nMember Contact Number > %s\nMember Up Line ID %s\n"
-        ,MemberDetail.MemberID,MemberDetail.Name,MemberDetail.gender,MemberDetail.IC,MemberDetail.ContactNumber,MemberDetail.UpLineID);
+     while (fscanf(filePTR, "%[^\n]-%[^\n]-%[^\n]-%[^\n]-%[^\n]",
+                   StaffDetail.StaffID, StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position) != EOF) {
+        if(strcmp(StaffDetail.StaffID,UserInputStaffID) == 0 && strcmp(StaffDetail.StaffPassPhrase,UserInputPassphrase) == 0){
+             fprintf(filePTR,"\n\nStaff ID > %s\nStaff Name > %s\nPassPhrase > %s\nPassword Recovery > %s\nStaff Position > %s\n"
+        ,StaffDetail.StaffID,StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position);
             IDfound =1;
-            printf("\nEnter field to modify: (Format:\nmemberid\npassphrase\ngender\nic\ncontactnumber\nuplineid)");
+            printf("\nEnter field to modify: (Format:\nstaffid\nname\npassphrase\npasswordrecovery\npostion\n)");
             scanf(" %s", field);
             printf("Enter new value: ");
             scanf(" %s", NewValue);
-            if (strcmp(field, "memberid") == 0) {
-                    strcpy(MemberDetail.MemberID,NewValue);
+            if (strcmp(field, "staffid") == 0) {
+                    strcpy(StaffDetail.StaffID,NewValue);
                     modified = 1;
-                    printf("%s",MemberDetail.MemberID);
+                    printf("%s",StaffDetail.StaffID);
                 }
             else if (strcmp(field,"passphrase") == 0) {
-                    strcpy(MemberDetail.MemberPassPhrase,NewValue);
+                    strcpy(StaffDetail.StaffPassPhrase,NewValue);
                     modified = 1;
-                    printf("%s",MemberDetail.MemberPassPhrase);
+                    printf("%s",StaffDetail.StaffPassPhrase);
                 }
-            else if (strcmp(field, "gender") == 0) {
-                    strcpy(MemberDetail.gender,NewValue);
+            else if (strcmp(field, "name") == 0) {
+                    strcpy(StaffDetail.StaffName,NewValue);
                     modified = 1;
-                    printf("%s",MemberDetail.gender);
+                    printf("%s",StaffDetail.StaffName);
             }
-            else if (strcmp(field, "ic") == 0) {
-                    strcpy(MemberDetail.IC,NewValue);
+            else if (strcmp(field, "passwordrecovery") == 0) {
+                    strcpy(StaffDetail.PasswordRecovery,NewValue);
                     modified = 1;
-                    printf("%s",MemberDetail.IC);
+                    printf("%s",StaffDetail.PasswordRecovery);
             }
-            else if (strcmp(field, "contactnumber") == 0) {
-                    strcpy(MemberDetail.ContactNumber,NewValue);
+            else if (strcmp(field, "position") == 0) {
+                    strcpy(StaffDetail.Position,NewValue);
                     modified = 1;
-            }
-            else if (strcmp(field, "uplineid") == 0) {
-                    strcpy(MemberDetail.UpLineID,NewValue);
-                    modified = 1;
+                    printf("%s",StaffDetail.Position);
             }
             if(modified == 1){
-                fprintf(filePTR,"\n\nMember ID > %s\nMember Name > %s\nMember Gender > %s\nMember IC > %s\nMember Contact Number > %s\nMember Up Line ID %s\n"
-        ,MemberDetail.MemberID,MemberDetail.Name,MemberDetail.gender,MemberDetail.IC,MemberDetail.ContactNumber,MemberDetail.UpLineID);
-                printf("\nSales information modified successfully.\n");
+                fprintf(filePTR,"\n\nStaff ID > %s\nStaff Name > %s\nPassPhrase > %s\nPassword Recovery > %s\nStaff Position > %s\n"
+        ,StaffDetail.StaffID,StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position);
+                printf("\nStaff information modified successfully.\n");
             }
         }
         else{
-             fprintf(filePTR,"\n\nMember ID > %s\nMember Name > %s\nMember Gender > %s\nMember IC > %s\nMember Contact Number > %s\nMember Up Line ID %s\n"
-        ,MemberDetail.MemberID,MemberDetail.Name,MemberDetail.gender,MemberDetail.IC,MemberDetail.ContactNumber,MemberDetail.UpLineID);
+             fprintf(filePTR,"\n\nStaff ID > %s\nStaff Name > %s\nPassPhrase > %s\nPassword Recovery > %s\nStaff Position > %s\n"
+        ,StaffDetail.StaffID,StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position);
             printf("\nInvalid field name.\n");
         }
     }
     if(!IDfound){
-        puts("Member Does not exist.");
+        puts("Staff Does not exist.");
     }
     fclose(filePTR);
 
@@ -228,23 +220,23 @@ void modifyModule(){
 }void SearchModule(){
     LoginModule();
     puts("Activating Search Module");
-    MemberInfo MemberDetail;
-    char UserInputMemberID[20];
+    StaffInfo StaffDetail;
+    char UserInputStaffID[20];
     char UserInputPassphrase[20];
     char confirmation = 'n';
     int Choice;
     int IDfound =0;
-    FILE *filePTR = fopen("MemberModuleFile.txt","w+");
+    FILE *filePTR = fopen("StaffModuleFile.txt","w+");
 
     puts("Enter Member id > eg.MEM001");
-    scanf(" %s",UserInputMemberID);
+    scanf(" %s",UserInputStaffID);
     puts("Enter Passphrase.");
     scanf(" %s",UserInputPassphrase);
 
-    while (fscanf(filePTR, "%[^\n]-%[^\n]-%c-%[^\n]-%[^\n]-%[^\n]",MemberDetail.MemberID, MemberDetail.Name,MemberDetail.gender, MemberDetail.IC,MemberDetail.ContactNumber, MemberDetail.UpLineID) != EOF) {
-        if(strcmp(MemberDetail.MemberID,UserInputMemberID) == 0 && strcmp(MemberDetail.MemberPassPhrase,UserInputPassphrase) == 0){
-             fprintf(filePTR,"\n\nMember ID > %s\nMember Name > %s\nMember Gender > %s\nMember IC > %s\nMember Contact Number > %s\nMember Up Line ID %s\n"
-        ,MemberDetail.MemberID,MemberDetail.Name,MemberDetail.gender,MemberDetail.IC,MemberDetail.ContactNumber,MemberDetail.UpLineID);
+    while(fscanf(filePTR, "%[^\n]-%[^\n]-%[^\n]-%[^\n]-%[^\n]",StaffDetail.StaffID, StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position) != EOF) {
+        if(strcmp(StaffDetail.StaffID,UserInputStaffID) == 0 && strcmp(StaffDetail.StaffPassPhrase,UserInputPassphrase) == 0){
+             fprintf(filePTR,"\n\nStaff ID > %s\nStaff Name > %s\nPassPhrase > %s\nPassword Recovery > %s\nStaff Position > %s\n"
+        ,StaffDetail.StaffID,StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position);
             IDfound =1;
         }
     }
@@ -278,8 +270,8 @@ void DisplayModule(){
 void ReportModule(int *CozyReport){
     puts("Printing cozy report");
 
-    FILE *filePTR = fopen("MemberModuleFile.txt","r");
-    MemberInfo MemberDetail;
+    FILE *filePTR = fopen("StaffModuleFile.txt","r");
+    StaffInfo StaffDetail;
     int counter;
 
 
@@ -290,23 +282,15 @@ void ReportModule(int *CozyReport){
 
     // Research Read from text
 
-    while(fread(&MemberDetail,sizeof(MemberInfo),1,filePTR) != 0){
-//       fwrite(&MemberDetail.MemberID,sizeof(char),10,filePTR);
-//       fwrite(&MemberDetail.Name,sizeof(char),50,filePTR);
-//       fwrite(&MemberDetail.gender,sizeof(char),1,filePTR);
-//       fwrite(&MemberDetail.IC,sizeof(char),15,filePTR);
-//       fwrite(&MemberDetail.ContactNumber,sizeof(char),12,filePTR);
-//       fwrite(&MemberDetail.UpLineID,sizeof(char),5,filePTR);
+    while(fread(&StaffDetail,sizeof(StaffInfo),1,filePTR) != 0){
         puts("------------------------------------------------------------");
-        puts("||\tAnchor Company Cozy Member Report\t\t ||");
+        puts("||\tAnchor Company Cozy Staff Report\t\t ||");
         puts("------------------------------------------------------------");
-        printf("|| \tMember ID \t\t>> \t%s\t\t ||\n",MemberDetail.MemberID);
-        puts("|| \tMember Password \t\t>> \t%s (Joking, not going to print it out lol)\t ||\n");
-        printf("|| \tMember Name \t\t>> \t%s\t ||\n",MemberDetail.Name);
-        printf("|| \tMember Gender \t\t>> \t%s\t ||\n",MemberDetail.gender);
-        printf("|| \tMember IC \t\t>> \t%s\t ||\n",MemberDetail.IC);
-        printf("|| \tMember Contact Number \t\t>> \t%s\t\t ||\n",MemberDetail.ContactNumber);
-        printf("|| \tMember Up Line Number \t\t>> \t%s\t ||\n",MemberDetail.UpLineID);
+        printf("|| \nStaff ID \t\t>> \t%s\t\t ||\n",StaffDetail.StaffID);
+        printf("|| \tStaff Password \t\t>> \t%s\t\t ||\n",StaffDetail.StaffPassPhrase);
+        printf("|| \tStaff Name \t\t>> \t%s\t ||\n",StaffDetail.StaffName);
+        printf("|| \tStaff Password Recovery \t\t>> \t%s\t ||\n",StaffDetail.PasswordRecovery);
+        printf("|| \tStaff Position \t\t>> \t%s\t ||\n",StaffDetail.Position);
         puts("------------------------------------------------------------");
 
     }
@@ -316,8 +300,8 @@ void ReportModule(int *CozyReport){
 void ReadFromFile(){
     puts("\nAccessing Read Module... \n");
 
-    FILE *filePTR = fopen("MemberModuleFile.txt","r");
-    MemberInfo MemberDetail;
+    FILE *filePTR = fopen("StaffModuleFile.txt","r");
+    StaffInfo StaffDetail;
     int counter;
 
 
@@ -328,12 +312,11 @@ void ReadFromFile(){
 
     // Research Read from text
 
-    while(fread(&MemberDetail,sizeof(MemberInfo),1,filePTR) != 0){   
+    while(fread(&StaffDetail,sizeof(StaffInfo),1,filePTR) != 0){   
 
-        printf("\n\nMember ID > %s\nMember Name > %s\nMember Gender > %s\nMember IC > %s\nMember Contact Number > %s\nMember Up Line ID %s\n"
-        ,MemberDetail.MemberID,MemberDetail.Name,MemberDetail.gender,MemberDetail.IC,MemberDetail.ContactNumber,MemberDetail.UpLineID);
+        fprintf(filePTR,"\n\nStaff ID > %s\nStaff Name > %s\nPassPhrase > %s\nPassword Recovery > %s\nStaff Position > %s\n"
+        ,StaffDetail.StaffID,StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position);
     }
-
     fclose(filePTR);
     puts("\n\nExiting Read Module... \n");
 }
@@ -341,10 +324,10 @@ void WriteToFile(){
     
     puts("Accessing Writing Module... \n");
 
-    MemberInfo MemberDetail;
+    StaffInfo StaffDetail;
     char confirmation;
 
-    FILE *filePTR = fopen("MemberModuleFile.txt","w");
+    FILE *filePTR = fopen("StaffModuleFile.txt","w");
     
     if(filePTR == NULL){
         printf("Error!");   
@@ -352,17 +335,16 @@ void WriteToFile(){
     };
 
     do{
-        puts("Format: \nMember ID (eg. MEM001)\nContact Number (eg. 012-123123123)\nGender (eg. M)\nIC (eg. 0343120912312)\n Name (eg. Lim Yong Hao)\nUp Line ID (eg. ID001)");
+        puts("Format: \nStaff ID (eg. STF001)\nStaff Name (eg. Twikipedia)\nStaff PassPhrase (eg.securepassword123)\nPassword Recovery (eg.dog)\nStaff Position (eg.Cachier)");
     
-        scanf(" %s",MemberDetail.MemberID);
-        scanf(" %s",MemberDetail.ContactNumber);
-        scanf(" %s",MemberDetail.gender);
-        scanf(" %s",MemberDetail.IC);
-        scanf(" %s",MemberDetail.Name);
-        scanf(" %s",MemberDetail.UpLineID);
+        scanf(" %s",StaffDetail.StaffName);
+        scanf(" %s",StaffDetail.StaffPassPhrase);
+        scanf(" %s",StaffDetail.StaffPassPhrase);
+        scanf(" %s",StaffDetail.PasswordRecovery);
+        scanf(" %s",StaffDetail.Position);
 
         puts("\nCurrently Writting to file... \n");
-        fwrite(&MemberDetail,sizeof(MemberInfo),1,filePTR);
+        fwrite(&StaffDetail,sizeof(StaffInfo),1,filePTR);
 
         puts("\nDo you Want to Continue? \n");
         puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
