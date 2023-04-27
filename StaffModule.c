@@ -12,18 +12,17 @@ typedef struct{
     char Position[30];
 }StaffInfo;
 
-void MemberModuleOptionSelect();
-int FilterOption(int *option);
-void AddModule();
-void ModifyModule();
-void DisplayModule();
-void WriteToFile();
-void SearchModule();
-void ReadFromFile();
-void LoginModule();
-//void ModuleSelect();
-int AskForContinueation();
-void ReportModule(int *CozyReport);
+void StaffModuleOptionSelect();
+int StaffFilterOption(int *option);
+void StaffAddModule();
+void StaffModifyModule();
+void StaffDisplayModule();
+void StaffWriteToFile();
+void StaffSearchModule();
+void StaffReadFromFile();
+void StaffLoginModule();
+int StaffAskForContinueation();
+void StaffReportModule(int *CozyReport);
 
 
 int main(int argc, char *argv[]){
@@ -53,9 +52,9 @@ int main(int argc, char *argv[]){
     puts("|\tWelcome to Anchor Company Module Management Program\t|");
 
 
-    MemberModuleOptionSelect();
+    StaffModuleOptionSelect();
 };
-void MemberModuleOptionSelect(){
+void StaffModuleOptionSelect(){
     // Job (Let user input what they want to do. then pass to FilterOption(); );
     
     int *option;
@@ -75,9 +74,9 @@ void MemberModuleOptionSelect(){
         scanf(" %c",&confirmation);
         puts("\n");
     }
-    FilterOption(&option);
+    StaffFilterOption(&option);
 }
-int FilterOption(int *option){
+int StaffFilterOption(int *option){
 
     // Job (Filter out User option, throw them to the place they want);
 
@@ -88,23 +87,23 @@ int FilterOption(int *option){
         return 0;
     }
     else if(*option == 1){
-        AddModule();
+        StaffAddModule();
     }
     else if(*option == 2){
-        ModifyModule();
+        StaffModifyModule();
     }
     else if(*option== 3){
-        SearchModule();
+        StaffSearchModule();
     }
     else if(*option == 4){
-        DisplayModule();
+        StaffDisplayModule();
     }
     else{
     puts("\n\nPlease Select A Valid Option\n");
-    MemberModuleOptionSelect();
+    StaffModuleOptionSelect();
     };
 };
-void LoginModule(){
+void StaffLoginModule(){
     StaffInfo StaffDetail;
     char UserInputStaffID[10];
     char UserInputPassphrase[20];
@@ -124,31 +123,31 @@ void LoginModule(){
         puts("Login Fail");
         fprintf(filePTR,"%s %s",StaffDetail.StaffID,StaffDetail.StaffPassPhrase);
         printf("user input %s %s",UserInputStaffID,UserInputPassphrase);
-        MemberModuleOptionSelect();
+        StaffModuleOptionSelect();
     }
 
     fclose(filePTR);
 }
-void AddModule(){
+void StaffAddModule(){
     //Job Write to file, ask User if they want to see file content. Yes throw to DisplayModule(). No go back OptionSelect();
     char confirmation;
     puts("Activating Add Module... \n");
 
-    WriteToFile();
+    StaffWriteToFile();
 
     puts("Would You Like to View Contents within the file?\n");
     puts("\ny > proceed \nn > no proceed \n(Pease only enter lower case)\n");
     scanf(" %c",&confirmation);
     
     if(confirmation == 'y'){
-        DisplayModule();
+        StaffDisplayModule();
     }
 
-    AskForContinueation();
+    StaffAskForContinueation();
 
 };
-void ModifyModule(){
-    LoginModule();
+void StaffModifyModule(){
+    StaffLoginModule();
     puts("In Modify Module\n");
 
     StaffInfo StaffDetail;
@@ -218,9 +217,9 @@ void ModifyModule(){
     }
     fclose(filePTR);
 
-    AskForContinueation();
-}void SearchModule(){
-    LoginModule();
+    StaffAskForContinueation();
+}void StaffSearchModule(){
+    StaffLoginModule();
     puts("Activating Search Module");
     StaffInfo StaffDetail;
     char UserInputStaffID[20];
@@ -249,11 +248,11 @@ void ModifyModule(){
     fclose(filePTR);
     
 
-    AskForContinueation();
+    StaffAskForContinueation();
 
 };
-void DisplayModule(){
-    LoginModule();
+void StaffDisplayModule(){
+    StaffLoginModule();
     puts("\nActivating Display Module... \n");
     
     int ReportSelection;
@@ -263,13 +262,13 @@ void DisplayModule(){
     
 
     if(ReportSelection == 1)
-        ReadFromFile();
+        StaffReadFromFile();
 
-    ReportModule(&ReportSelection);
+    StaffReportModule(&ReportSelection);
 
    int AskForContinueation();
 }
-void ReportModule(int *CozyReport){
+void StaffReportModule(int *CozyReport){
     puts("Printing cozy report");
 
     FILE *filePTR = fopen("StaffModuleFile.txt","r");
@@ -299,7 +298,7 @@ void ReportModule(int *CozyReport){
     fclose(filePTR);
 
 }
-void ReadFromFile(){
+void StaffReadFromFile(){
     puts("\nAccessing Read Module... \n");
 
     FILE *filePTR = fopen("StaffModuleFile.txt","r");
@@ -322,7 +321,7 @@ void ReadFromFile(){
     fclose(filePTR);
     puts("\n\nExiting Read Module... \n");
 }
-void WriteToFile(){
+void StaffWriteToFile(){
     
     puts("Accessing Writing Module... \n");
 
@@ -358,7 +357,7 @@ void WriteToFile(){
 
     puts("Exiting Write Module... \n");
 };
-int AskForContinueation(){
+int StaffAskForContinueation(){
     char confirmation = 'n';
     char DoubleConfirm = 'n';
     while(DoubleConfirm != 'y'){
@@ -374,5 +373,5 @@ int AskForContinueation(){
     if(confirmation == 'n'){
         return 0;
     }
-    //ModuleSelect();
+    ModuleSelect();
 };
