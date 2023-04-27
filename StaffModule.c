@@ -21,7 +21,7 @@ void WriteToFile();
 void SearchModule();
 void ReadFromFile();
 void LoginModule();
-void ModuleSelect();
+//void ModuleSelect();
 int AskForContinueation();
 void ReportModule(int *CozyReport);
 
@@ -106,22 +106,24 @@ int FilterOption(int *option){
 };
 void LoginModule(){
     StaffInfo StaffDetail;
-    char UserInputStaffID[20];
+    char UserInputStaffID[10];
     char UserInputPassphrase[20];
     int Loginsuccess =0;
-    FILE *filePTR = fopen("StaffModuleFile.txt","w+");
+    FILE *filePTR = fopen("StaffModuleFile.txt","r");
     puts("Please Enter your Credentials!\n");
     puts("Please Enter Your Staff ID > eg.STF001");
     scanf(" %s",UserInputStaffID);
     puts("Please Enter Your Staff Passphrase");
     scanf(" %s",UserInputPassphrase);
 
-    if(strcmp(StaffDetail.StaffID,UserInputStaffID) == 0 && strcmp(StaffDetail.StaffPassPhrase,UserInputPassphrase) == 0){
+    if(strcmp(UserInputStaffID,"STF001") == 0 && strcmp(UserInputPassphrase,"123") == 0){
         Loginsuccess =1;
     }
     else{
         Loginsuccess =0;
         puts("Login Fail");
+        fprintf(filePTR,"%s %s",StaffDetail.StaffID,StaffDetail.StaffPassPhrase);
+        printf("user input %s %s",UserInputStaffID,UserInputPassphrase);
         MemberModuleOptionSelect();
     }
 
@@ -145,7 +147,7 @@ void AddModule(){
     AskForContinueation();
 
 };
-void modifyModule(){
+void ModifyModule(){
     LoginModule();
     puts("In Modify Module\n");
 
@@ -166,7 +168,7 @@ void modifyModule(){
 
      while (fscanf(filePTR, "%[^\n]-%[^\n]-%[^\n]-%[^\n]-%[^\n]",
                    StaffDetail.StaffID, StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position) != EOF) {
-        if(strcmp(StaffDetail.StaffID,UserInputStaffID) == 0 && strcmp(StaffDetail.StaffPassPhrase,UserInputPassphrase) == 0){
+        if(strcmp(UserInputStaffID,"STF001") == 0 && strcmp(UserInputPassphrase,"123") == 0){
              fprintf(filePTR,"\n\nStaff ID > %s\nStaff Name > %s\nPassPhrase > %s\nPassword Recovery > %s\nStaff Position > %s\n"
         ,StaffDetail.StaffID,StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position);
             IDfound =1;
@@ -234,7 +236,7 @@ void modifyModule(){
     scanf(" %s",UserInputPassphrase);
 
     while(fscanf(filePTR, "%[^\n]-%[^\n]-%[^\n]-%[^\n]-%[^\n]",StaffDetail.StaffID, StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position) != EOF) {
-        if(strcmp(StaffDetail.StaffID,UserInputStaffID) == 0 && strcmp(StaffDetail.StaffPassPhrase,UserInputPassphrase) == 0){
+        if(strcmp(UserInputStaffID,"STF001") == 0 && strcmp(UserInputPassphrase,"123") == 0){
              fprintf(filePTR,"\n\nStaff ID > %s\nStaff Name > %s\nPassPhrase > %s\nPassword Recovery > %s\nStaff Position > %s\n"
         ,StaffDetail.StaffID,StaffDetail.StaffName,StaffDetail.StaffPassPhrase,StaffDetail.PasswordRecovery,StaffDetail.Position);
             IDfound =1;
@@ -337,8 +339,8 @@ void WriteToFile(){
     do{
         puts("Format: \nStaff ID (eg. STF001)\nStaff Name (eg. Twikipedia)\nStaff PassPhrase (eg.securepassword123)\nPassword Recovery (eg.dog)\nStaff Position (eg.Cachier)");
     
+        scanf(" %s",StaffDetail.StaffID);
         scanf(" %s",StaffDetail.StaffName);
-        scanf(" %s",StaffDetail.StaffPassPhrase);
         scanf(" %s",StaffDetail.StaffPassPhrase);
         scanf(" %s",StaffDetail.PasswordRecovery);
         scanf(" %s",StaffDetail.Position);
@@ -372,5 +374,5 @@ int AskForContinueation(){
     if(confirmation == 'n'){
         return 0;
     }
-    ModuleSelect();
+    //ModuleSelect();
 };

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include <math.h>
+
 #pragma warning(disable:4996);
 typedef struct{
     char MemberID[10];
@@ -23,7 +23,6 @@ void WriteToFile();
 void SearchModule();
 void ReadFromFile();
 void LoginModule();
-void ModuleSelect();
 int AskForContinueation();
 void ReportModule(int *CozyReport);
 
@@ -118,7 +117,7 @@ void LoginModule(){
     puts("Please Enter Your Member Passphrase");
     scanf(" %s",UserInputPassphrase);
 
-    if(strcmp(MemberDetail.MemberID,UserInputMemberID) == 0 && strcmp(MemberDetail.MemberPassPhrase,UserInputPassphrase) == 0){
+    if(strcmp(UserInputMemberID,"MEM001") == 0 && strcmp(UserInputPassphrase,"123") == 0){
         Loginsuccess =1;
     }
     else{
@@ -146,8 +145,8 @@ void AddModule(){
 
     AskForContinueation();
 
-};
-void modifyModule(){
+}
+void ModifyModule(){
     LoginModule();
     puts("In Modify Module\n");
 
@@ -170,7 +169,7 @@ void modifyModule(){
                    MemberDetail.MemberID, MemberDetail.Name,
                    MemberDetail.gender, MemberDetail.IC,
                    MemberDetail.ContactNumber, MemberDetail.UpLineID) != EOF) {
-        if(strcmp(MemberDetail.MemberID,UserInputMemberID) == 0 && strcmp(MemberDetail.MemberPassPhrase,UserInputPassphrase) == 0){
+        if(strcmp(UserInputMemberID,"MEM001") == 0 && strcmp(UserInputPassphrase,"123") == 0){
              fprintf(filePTR,"\n\nMember ID > %s\nMember Name > %s\nMember Gender > %s\nMember IC > %s\nMember Contact Number > %s\nMember Up Line ID %s\n"
         ,MemberDetail.MemberID,MemberDetail.Name,MemberDetail.gender,MemberDetail.IC,MemberDetail.ContactNumber,MemberDetail.UpLineID);
             IDfound =1;
@@ -241,7 +240,7 @@ void modifyModule(){
     scanf(" %s",UserInputPassphrase);
 
     while (fscanf(filePTR, "%[^\n]-%[^\n]-%c-%[^\n]-%[^\n]-%[^\n]",MemberDetail.MemberID, MemberDetail.Name,MemberDetail.gender, MemberDetail.IC,MemberDetail.ContactNumber, MemberDetail.UpLineID) != EOF) {
-        if(strcmp(MemberDetail.MemberID,UserInputMemberID) == 0 && strcmp(MemberDetail.MemberPassPhrase,UserInputPassphrase) == 0){
+        if(strcmp(UserInputMemberID,"MEM001") == 0 && strcmp(UserInputPassphrase,"123") == 0){
              fprintf(filePTR,"\n\nMember ID > %s\nMember Name > %s\nMember Gender > %s\nMember IC > %s\nMember Contact Number > %s\nMember Up Line ID %s\n"
         ,MemberDetail.MemberID,MemberDetail.Name,MemberDetail.gender,MemberDetail.IC,MemberDetail.ContactNumber,MemberDetail.UpLineID);
             IDfound =1;
@@ -351,14 +350,17 @@ void WriteToFile(){
     };
 
     do{
-        puts("Format: \nMember ID (eg. MEM001)\nContact Number (eg. 012-123123123)\nGender (eg. M)\nIC (eg. 0343120912312)\n Name (eg. Lim Yong Hao)\nUp Line ID (eg. ID001)");
-    
+        puts("Format: \nMember ID (eg. MEM001)\nContact Number (eg. 012-123123123)(max 12 char)\nGender (eg. M)\nIC (eg. 0343120912312)(max 15 char)\nName (eg. Lim Yong Hao)\nUp Line ID (eg. ID001)");
+
+        puts("\n");
         scanf(" %s",MemberDetail.MemberID);
         scanf(" %s",MemberDetail.ContactNumber);
         scanf(" %s",MemberDetail.gender);
         scanf(" %s",MemberDetail.IC);
         scanf(" %s",MemberDetail.Name);
+        rewind(stdin);
         scanf(" %s",MemberDetail.UpLineID);
+        rewind(stdin);
 
         puts("\nCurrently Writting to file... \n");
         fwrite(&MemberDetail,sizeof(MemberInfo),1,filePTR);
@@ -389,5 +391,5 @@ int AskForContinueation(){
     if(confirmation == 'n'){
         return 0;
     }
-    ModuleSelect();
+    //ModuleSelect();
 };

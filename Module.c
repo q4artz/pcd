@@ -69,7 +69,6 @@ void SalesModuleOptionSelect(){
         puts("2 > Modify");
         puts("3 > Search");
         puts("4 > Display");
-        puts("5 > Count File Excess");
         scanf("%d",&option);
         
         printf("\n\nConfirm option \t%d ??\n",option);
@@ -146,48 +145,48 @@ void ModifyModule(){
              printf("\n\nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
             ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
             IDfound = 1;
+        }
 
-            printf("\nEnter field to modify: (Format:\nsalesorderid\nitemcode\nquantity\nprice\nmemberid)");
-            scanf(" %s", field);
+        printf("\nEnter field to modify: ");
+        scanf("%s", field);
 
-            if(strcmp(field,"quantity") == 0){
-                puts("Enter new integer Value");
-                scanf("%d",&NewIntValue);
-            }
-            else if(strcmp(field,"price") == 0){
-                puts("Enter new Double Value");
-                scanf("%lf",&NewDoubleValue);
-            }
-            else{
-            printf("Enter new value: ");
-            scanf(" %s", NewValue);
-            }
-            if (strcmp(field, "salesorderid") == 0) {
-                    strcpy(SalesDetail.SalesOrderID, NewValue);
-                    modified = 1;
-                    printf("%s",SalesDetail.SalesOrderID);
-                }
-            else if (strcmp(field,"itemcode") == 0) {
-                    strcpy(SalesDetail.ItemCode,NewValue);
-                    modified = 1;
-                    printf("%s",SalesDetail.ItemCode);
-                }
-            else if (strcmp(field, "quantity") == 0) {
-                SalesDetail.QuantityOrdered = NewIntValue;
+        if(strcmp(field,"quantity") == 0){
+            puts("Enter new integer Value");
+            scanf("%d",&NewIntValue);
+        }
+        else if(strcmp(field,"price") == 0){
+            puts("Enter new Double Value");
+            scanf("%lf",&NewDoubleValue);
+        }
+        else{
+        printf("Enter new value: ");
+        scanf("%s", NewValue);
+        }
+        if (strcmp(field, "salesorderid") == 0) {
+                strcpy(SalesDetail.SalesOrderID, NewValue);
                 modified = 1;
+                printf("%s",SalesDetail.SalesOrderID);
             }
-            else if (strcmp(field, "price") == 0) {
-                SalesDetail.Price = NewDoubleValue;
+        else if (strcmp(field,"itemcode") == 0) {
+                strcpy(SalesDetail.ItemCode,NewValue);
                 modified = 1;
+                printf("%s",SalesDetail.ItemCode);
             }
-            else if (strcmp(field, "memberid") == 0) {
-                strcpy(SalesDetail.MemberID,NewValue);
-                modified = 1;
-            }
-            if(modified == 1){
-                fprintf(filePTR,"%s\n%s\n%d\n%lf\n%s",SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
-                printf("\nSales information modified successfully.\n");
-            }
+        else if (strcmp(field, "quantity") == 0) {
+            SalesDetail.QuantityOrdered = NewIntValue;
+            modified = 1;
+        }
+        else if (strcmp(field, "price") == 0) {
+            SalesDetail.Price = NewDoubleValue;
+            modified = 1;
+        }
+        else if (strcmp(field, "gender") == 0) {
+            strcpy(SalesDetail.MemberID,NewValue);
+            modified = 1;
+        }
+        if(modified == 1){
+            fprintf(filePTR,"%s\n%s\n%d\n%lf\n%s",SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
+            printf("\nSales information modified successfully.\n");
         }
         else{
             fprintf(filePTR,"%s\n%s\n%d\n%lf\n%s",SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
@@ -212,12 +211,12 @@ void SearchModule(){
     FILE *filePTR = fopen("SalesModuleFile.bin","rb+");
 
     puts("Enter Sales Order id > eg.S001");
-    scanf(" %s",UserInputSalesOrderID);
+    scanf("%s",UserInputSalesOrderID);
 
     while(fscanf(filePTR,"%[^\n]-%[^\n]-%d-%lf-%[^\n]",SalesDetail.SalesOrderID,SalesDetail.ItemCode,&SalesDetail.QuantityOrdered,&SalesDetail.Price,SalesDetail.MemberID) != EOF){
         if(strcmp(SalesDetail.SalesOrderID,UserInputSalesOrderID)==0){
             puts("Sales Module Found");
-             fprintf(filePTR,"\n\nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
+             printf("\n\nSales Order ID > %s\nItem Code > %s\nQuantity Ordered > %d\nPrice > %.2lf\nMember ID > %s\n"
             ,SalesDetail.SalesOrderID,SalesDetail.ItemCode,SalesDetail.QuantityOrdered,SalesDetail.Price,SalesDetail.MemberID);
             IDfound = 1;
         }
@@ -252,6 +251,7 @@ void ReportModule(int *CozyReport){
 
     FILE *filePTR = fopen("SalesModuleFile.bin","rb");
     SalesOrder SalesDetail;
+    int counter;
 
      if(filePTR == NULL){
         puts("There is nothing inside the file.");
